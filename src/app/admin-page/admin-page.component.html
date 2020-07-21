@@ -1,0 +1,64 @@
+<div>
+  Search:
+  <input type="text" [(ngModel)]="searchValue" placeholder="Search ...">
+  <button type="button" (click)="onSearch()"> Search </button>
+
+</div>
+<p-table #dataTable [columns]="cols" [value]="data" [paginator]="true" [rows]="20" selectionMode="single"
+  [(selection)]="selectedItem" (onRowSelect)="onRowSelect($event)">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr [pSelectableRow]="rowData">
+      <td *ngFor="let col of columns">
+        {{rowData[col.field]}}
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary" let-rowData>
+    <div style="text-align:left">
+      <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()">Add</button>
+    </div>
+  </ng-template>
+</p-table>
+<button type="button" (click)="exportData()">Export Data</button>
+
+<p-dialog header="Item Details" [(visible)]="displayDialog" showEffect="fade" [modal]="true"  [contentStyle]="{'min-height':'500px'}">
+  <div class="ui-g ui-fluid" *ngIf="item">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="vin">Id</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="vin" [(ngModel)]="item.id" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="year">Value</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="year" [(ngModel)]="item.value" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="brand">Date</label>
+      </div>
+      <div class="ui-g-3">
+        <p-calendar [(ngModel)]="item.date" dateFormat="dd.mm.yy"></p-calendar>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton (click)="onCancelDialog()">Cancel</button>
+      <button type="button" pButton (click)="onSave()">Save</button>
+    </div>
+  </p-footer>
+</p-dialog>
